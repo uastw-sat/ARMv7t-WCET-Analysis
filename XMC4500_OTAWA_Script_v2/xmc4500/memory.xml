@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+
+<!-- edit
+https://wwwsecu.irit.fr/hg/TRACES/otawa/trunk/file/1c58146f5f2b/doc/dev/dev-script.thot
+
+The ''type'' gives hints on the nature of the memory. Possible values may be:
+* DRAM - usual dynamic RAM,
+* SPM - on-chip static RAM (usually accessed in 1 cycle),
+* ROM - read-only memory (EEPROM or anything else) but also NAND flash memory with random access,
+* IO - represents input/output register of peripherals (access time is usually high). 
+edit -->
+
+
+<memory>
+	<configuration>
+		<item name="WSPFLASH" type="range" default="3" label="PFLASH read access time" low="1" high="15">
+			<help>Defines the number of wait state for a PFLASH read. One wait cycle delays one cycle.</help>
+		</item>
+	</configuration>
+	<banks>
+		<bank>
+			<name>FLASH_1_cached</name>   <!--Program FLASH1 cachable-->
+			<address><offset>0x08000000</offset></address>
+			<size>0x00100000</size>
+			<type>ROM</type>
+			<latency>1</latency>
+			<writable>false</writable>
+			<cachable>true</cachable>
+		</bank>
+		<bank>
+			<name>FLASH_1_uncached</name>   <!--Program FLASH1 uncachable-->
+			<address><offset>0x0C000000</offset></address>
+			<size>0x00100000</size>
+			<type>ROM</type>
+			<latency>3</latency> <!--WSPFLASH-->
+			<write_latency>3</write_latency>  <!--WSPFLASH-->
+			<writable>true</writable>
+			<cachable>false</cachable>
+		</bank>
+		<bank>
+			<name>PSRAM_1</name>   <!--Program SRAM-->
+			<address><offset>0x10000000</offset></address>
+			<size>0x00010000</size>
+			<type>SPM</type>
+			<latency>1</latency>
+			<write_latency>1</write_latency>
+			<writable>true</writable>
+			<cachable>false</cachable>
+		</bank>
+		<bank>
+			<name>DSRAM_1_system</name>   <!--System Data SRAM-->
+			<address><offset>0x20000000</offset></address>
+			<size>0x00010000</size>
+			<type>SPM</type>
+			<latency>1</latency>
+			<write_latency>1</write_latency>
+			<writable>true</writable>
+			<cachable>false</cachable>
+		</bank>
+		<bank>
+			<name>DSRAM_2_comm</name>   <!--Communication Data SRAM-->
+			<address><offset>0x30000000</offset></address>
+			<size>0x00008000</size>
+			<type>SPM</type>
+			<latency>1</latency>
+			<write_latency>1</write_latency>
+			<writable>true</writable>
+			<cachable>false</cachable>
+		</bank>
+	</banks>
+</memory>

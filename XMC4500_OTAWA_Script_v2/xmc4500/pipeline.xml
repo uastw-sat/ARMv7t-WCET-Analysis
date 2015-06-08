@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<processor class="otawa::hard::Processor">
+	<configuration>
+		<item name="CCLK" type="range" default="120" label="Frequency" low="1" high="120">
+			<help>Select the frequency of the CPU (in MHz).</help>
+		</item>
+	</configuration>
+	<arch>armv7</arch>
+	<model>xmc4500</model>	<!-- Infineon XMC4500 -->
+	<frequency>120000000"</frequency>
+
+		<stages>
+		<stage id="FI">
+			<name>FI</name>
+			<width>2</width>
+			<type>FETCH</type>
+		</stage>
+		<stage id="DI">
+			<name>DI</name>
+			<width>1</width>
+			<type>LAZY</type>
+		</stage>
+		
+		<stage id="EX">
+			<name>EX</name>
+			<type>EXEC</type>
+			<width>1</width>
+			<ordered>true</ordered>
+			<fus>
+				<fu id="ALU">
+					<name>ALU</name>
+					<width>1</width>
+				</fu>
+			</fus>
+			
+			<dispatch>
+				<inst>
+					<type>IS_CALL</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_ALU</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_RETURN</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_SHIFT</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_TRAP</type>
+					<fu ref="ALU"/>
+				</inst>
+				<!--inst>
+					<type>IS_MULTI</type>
+					<fu ref="ALU"/>
+				</inst-->
+				<!--inst>
+					<type>IS_INDIRECT</type>
+					<fu ref="ALU"/>
+				</inst-->
+				<!--inst>
+					<type>IS_ATOMIC</type>
+					<fu ref="ALU"/>
+				</inst-->
+				<inst>
+					<type>IS_MEM</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_LOAD</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_STORE</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_FLOAT</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_MUL</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_DIV</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_INT</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_CONTROL</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>IS_INTERN</type>
+					<fu ref="ALU"/>
+				</inst>
+				<inst>
+					<type>0</type>
+					<fu ref="ALU"/>
+				</inst>
+			</dispatch>
+
+		</stage>	
+		<stage id="CM">
+			<name>CM</name>
+			<type>COMMIT</type>
+			<width>1</width>
+			<latency>0</latency>
+		</stage>
+	</stages>
+	<!--queues>
+		<queue>
+			<name>FQ</name>
+			<size>0</size>
+			<input ref="FI"/>
+			<output ref="DI"/>
+		</queue>
+		<queue>
+			<name>ROB</name>
+			<size>0</size>
+			<input ref="DI"/>
+			<output ref="EX"/>
+			<intern>
+				<stage ref="EX"/>
+			</intern>
+		</queue>
+	</queues-->
+</processor>
+

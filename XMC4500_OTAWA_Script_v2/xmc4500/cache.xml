@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cache-config>
+	<!-- 4KByte Instruction Cache -->
+	<!-- 2-way set associative -->
+	<icache>
+		<block_bits>6</block_bits> <!-- 2^6 = 64 bit; size of cache blocks-->
+		<way_bits>2</way_bits> <!-- 2^2 = 4;  number of blocks in each set -->
+		<row_bits>7</row_bits> <!-- 32768bits/256bits = 128 = 2^7; sets in the cache -->
+		<replace>LRU</replace> <!-- Least-Recently-Used (LRU) replacement policy -->
+	</icache>
+	<!-- cache size = 2^(block_bits+way_bits+row_bits) = 2^(6+2+7) = 2^15 = 4kBytes -->
+	
+	
+	<!-- Kein Data Cache aber einen 256-bit Databuffer, mit <queue></queue> beschreiben?!-->
+	<!--dcache>
+		<block_bits>6</block_bits>
+		<way_bits>2</way_bits>
+		<row_bits>1</row_bits>
+	</dcache-->
+	
+</cache-config>

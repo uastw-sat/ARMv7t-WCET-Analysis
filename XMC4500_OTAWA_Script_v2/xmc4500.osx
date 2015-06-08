@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<otawa-script
+    xmlns:xi="http://www.w3.org/2001/XInclude"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+
+<info>
+	<h1>XMC4500 OTAWA Script</h1>
+	<p>This OTAWA script provides support for ARM Cortex-M4 based XMC4500 from Infineon.</p>
+</info>
+
+
+<name>XMC4500</name>
+
+
+<id>
+	<arch>armv7</arch>
+	<model>armv7</model>
+	<mach>cortex-m4</mach>
+	<abi>eabi</abi>
+</id>
+
+
+<configuration>
+	<item name="stages" type="int" default="3" label="number of stages">
+		<help>Number of stages in the pipeline.</help>
+	</item>
+</configuration>
+
+
+<platform>
+	<xi:include href="xmc4500/pipeline.xml"/>
+	<xi:include href="xmc4500/cache.xml"/>
+	<xi:include href="xmc4500/memory.xml"/>
+
+	<bht>  <!-- mandatory for BHTGetter...
+		<cond_penalty>3</cond_penalty>
+		<indirect_penalty>3</indirect_penalty>
+		<cond_indirect_penalty>3</cond_indirect_penalty>
+		<def_predict>4</def_predict>
+		<row_bits>9</row_bits>
+		<row>0</row>
+		<replace>RANDOM</replace>
+		-->
+	</bht>
+</platform>
+
+
+<script>
+	<step processor="otawa::Virtualizer"/>
+	<step require="otawa::hard::PROCESSOR_FEATURE"/>
+	
+	<step processor="otawa::BasicGraphBBTime"/>
+
+	<step processor="otawa::CAT2ConstraintBuilder"/>  <!--instruction cache using cache.xml-->
+
+	<!-- WCET analysis using BasicGraphBBTime and pipeline.xml-->
+	<step require="otawa::ipet::WCET_FEATURE"/>
+</script>
+
+
+</otawa-script>
