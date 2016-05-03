@@ -252,6 +252,39 @@ main:
         subne r5, r6, r7
         addeq r1, r2, #4
 		
+		
+
+@------------------------------------------------------------------------------
+@ LDC{L}/LDC2{L}
+@------------------------------------------------------------------------------
+        ldc2 p0, c8, [r1, #4]
+        ldc2 p1, c7, [r2]
+        ldc2 p2, c6, [r3, #-224]
+        ldc2 p3, c5, [r4, #-120]!
+        ldc2 p4, c4, [r5], #16
+        ldc2 p5, c3, [r6], #-72
+        ldc2l p6, c2, [r7, #4]
+        ldc2l p7, c1, [r8]
+        ldc2l p8, c0, [r9, #-224]
+        ldc2l p9, c1, [r10, #-120]!
+        ldc2l p0, c2, [r11], #16
+        ldc2l p1, c3, [r12], #-72
+
+        ldc p12, c4, [r0, #4]
+        ldc p13, c5, [r1]
+        ldc p14, c6, [r2, #-224]
+        ldc p15, c7, [r3, #-120]!
+        ldc p5, c8, [r4], #16
+        ldc p4, c9, [r5], #-72
+        ldcl p3, c10, [r6, #4]
+        ldcl p2, c11, [r7]
+        ldcl p1, c12, [r8, #-224]
+        ldcl p0, c13, [r9, #-120]!
+        ldcl p6, c14, [r10], #16
+        ldcl p7, c15, [r11], #-72
+
+        ldc2 p2, c8, [r1], { 25 }
+		
 @------------------------------------------------------------------------------
 @ LDMIA
 @------------------------------------------------------------------------------
@@ -1308,7 +1341,36 @@ main:
         ssub16ne r5, r3, r2
         ssub8eq r5, r1, r2
 
+@------------------------------------------------------------------------------
+@ STC{L}/STC2{L}
+@------------------------------------------------------------------------------
+        stc2 p0, c8, [r1, #4]
+        stc2 p1, c7, [r2]
+        stc2 p2, c6, [r3, #-224]
+        stc2 p3, c5, [r4, #-120]!
+        stc2 p4, c4, [r5], #16
+        stc2 p5, c3, [r6], #-72
+        stc2l p6, c2, [r7, #4]
+        stc2l p7, c1, [r8]
+        stc2l p8, c0, [r9, #-224]
+        stc2l p9, c1, [r10, #-120]!
+        stc2l p0, c2, [r11], #16
+        stc2l p1, c3, [r12], #-72
 
+        stc p12, c4, [r0, #4]
+        stc p13, c5, [r1]
+        stc p14, c6, [r2, #-224]
+        stc p15, c7, [r3, #-120]!
+        stc p5, c8, [r4], #16
+        stc p4, c9, [r5], #-72
+        stcl p3, c10, [r6, #4]
+        stcl p2, c11, [r7]
+        stcl p1, c12, [r8, #-224]
+        stcl p0, c13, [r9, #-120]!
+        stcl p6, c14, [r10], #16
+        stcl p7, c15, [r11], #-72
+
+        stc2 p2, c8, [r1], { 25 }
 
 @------------------------------------------------------------------------------
 @ STMIA
@@ -1938,7 +2000,168 @@ main:
         uxth r9, r3, ror #24
         uxth.w  r7, r8
 
+@------------------------------------------------------------------------------
+@ FPU TEST CASES for ARMv7E-M
+@------------------------------------------------------------------------------	
+@Set bits [11:10] of the NSACR for access to CP10 and CP11 from both Secure and Non-secure states:
+		MRC p15, 0, r0, c1, c1, 2
+@		ORR r0, r0, #2_11<<10
+@		MCR p15, 0, r0, c1, c1, 2
+@Set the CPACR for access to CP10 and CP11:
+		LDR r0, =(0xF << 20)
+		MCR p15, 0, r0, c1, c0, 2
 
+@ Set the FPEXC EN bit to enable the FPU:
+		MOV r3, #0x40000000 
+		VMSR FPEXC, r3
+
+
+		
+
+		
+
+	
+@ NEW TEST	
+		vabs.f32 s4, s5
+		vadd.f32  s0, s1, s0
+		vsub.f32  s0, s1, s0
+		vdiv.f32  s0, s1, s0
+		vmul.f32  s0, s1, s0
+		vmul.f32  s11, s21
+		vnmul.f32       s0, s1, s0
+		vcmpe.f32 s0, s1
+        vcmp.f32 s2, s3
+        vcmpe.f32 s5, #0
+        vcmp.f32 s6, #0
+		vabs.f32        s0, s0
+@		vcvt.f32.f64    s0, d16
+		vcvtt.f32.f16 s3, s1
+		vcvtt.f16.f32 s5, s12
+		vcvtb.f32.f16 s3, s1
+		vcvtb.f16.f32 s4, s1	
+		vsqrt.f32       s0, s0
+		vcvt.f32.s32    s0, s0
+		vcvt.f32.u32    s0, s0
+		vcvt.s32.f32    s0, s0
+		vcvt.u32.f32    s0, s0
+		vmul.f32 s6, s7, s8
+        vnmul.f32 s8, s9, s10
+        vmla.f32 s11, s10, s9
+        vmls.f32 s8, s7, s6
+        vnmla.f32 s5, s4, s3
+        vnmls.f32 s2, s1, s0
+        vfma.f32 s1, s2, s3
+        vfms.f32 s4, s5, s6
+        vfnma.f32 s7, s8, s9
+        vfnms.f32 s10, s11, s12
+		vneg.f32 s15, s14
+        vsqrt.f32 s13, s12
+		vmla.f32        s1, s2, s0
+		vmls.f32        s1, s2, s0
+		vnmla.f32       s1, s2, s0
+		vnmls.f32       s1, s2, s0
+		vmrs    APSR_nzcv, fpscr
+		vmrs    apsr_nzcv, fpscr
+		vmrs    r2, fpsid
+		vmrs    r3, FPSID
+		vmrs    r4, mvfr0
+		vmrs    r5, MVFR1
+		vmov.f32 r1, s2
+		vmov.f32 s4, r3
+		vmrs    r0, fpscr
+		vmrs  r0, fpexc
+		vmrs  r0, fpsid
+		vmrs r1, fpinst
+		vmrs r8, fpinst2
+		vmsr    fpscr, r0
+		vmsr  fpexc, r0
+		vmsr  fpsid, r0
+		vmsr fpinst, r3	
+		vmsr fpinst2, r4
+		vmov.f32        s0, #3.000000e+00
+		vmov.f32        s0, #-3.000000e+00
+		vmov    s0, r0
+		vmov    s1, r1
+		vmov    s2, r2
+		vmov    s3, r3
+		vmov    r0, s0
+		vmov    r1, s1
+		vmov    r2, s2
+		vmov    r3, s3
+		vmov    r0, r1, d16
+		vmov s3, s4, r1, r2
+		vmov s2, s3, r1, r2
+		vmov r1, r2, s3, s4
+		vmov r1, r2, s2, s3
+		vmov d15, r1, r2 
+		vmov d16, r1, r2
+		vmov r1, r2, d15
+		vmov r1, r2, d16
+		vpush {d8, d9, d10, d11, d12}
+		vpush {s8, s9, s10, s11, s12}
+		vpop  {d8, d9, d10, d11, d12}
+		vpop  {s8, s9, s10, s11, s12}
+		vpush.s8 {d8, d9, d10, d11, d12}
+		vpush.16 {s8, s9, s10, s11, s12}
+		vpop.f32  {d8, d9, d10, d11, d12}
+		vpop.64  {s8, s9, s10, s11, s12}
+		vldr.64	d15, [r0]
+		vldr.i32 s0, [lr]
+		vldr.d d0, [lr]
+		vldr.64	d1, [r2, #32]
+		vldr.f64	d1, [r2, #-32]
+		vldr.64 d2, [r3]
+		vldr.64 d3, [pc]
+		vldr.64 d3, [pc,#0]
+		vldr.64 d3, [pc,#-0]
+		vldr.32	s13, [r0]
+		vldr.32	s1, [r2, #32]
+		vldr.32	s1, [r2, #-32]
+		vldr.32 s2, [r3]
+		vldr.32 s5, [pc]
+		vldr.32 s5, [pc,#0]
+		vldr.32 s5, [pc,#-0]
+		vstr.64 d4, [r1]
+		vstr.64 d4, [r1, #24]
+		vstr.64 d4, [r1, #-24]
+		vstr s0, [lr]
+		vstr d0, [lr]
+		vstr.32 s4, [r1]
+		vstr.32 s4, [r1, #24]
+		vstr.32 s4, [r1, #-24]
+		vldmia  r1, {d2,d3-d6,d7}
+		vldmia  r1, {s2,s3-s6,s7}
+		vstmia  r1, {d2,d3-d6,d7}
+		vstmia  r1, {s2,s3-s6,s7}
+		vstmdb sp!, {q4-q7}
+		vcvtr.s32.f32  s0, s1
+		vcvtr.u32.f32  s0, s1      
+		vmov.32 s1, r8
+		vmov.s16 s2, r4
+		vmov.16 s3, r6
+		vmov.u32 s4, r1
+		vmov.p8 s5, r2
+		vmov.8 s6, r3
+		vmov.32 r1, s8
+		vmov.s16 r2, s4
+		vmov.16 r3, s6
+		vmov.u32 r4, s1
+		vmov.p8 r5, s2
+		vmov.8 r6, s3
+		vcvt.f32.u32 s0, s0, #20
+		vcvt.f32.u16 s0, s0, #1
+		vcvt.f32.s32 s1, s1, #20
+		vcvt.f32.s16 s17, s17, #1
+		vcvt.u32.f32 s12, s12, #20 
+		vcvt.u16.f32 s28, s28, #1
+		vcvt.s32.f32 s1, s1, #20
+		vcvt.s16.f32 s17, s17, #1
+		vmov.f32 s5, #1.0
+		vmov.f32 s5, #0.125
+		vmov.f32 s5, #-1.875
+		vmov.f32 s5, #-0.59375
+
+	
 @------------------------------------------------------------------------------
 @ WFE/WFI/YIELD
 @------------------------------------------------------------------------------
