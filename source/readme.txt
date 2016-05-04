@@ -1,8 +1,8 @@
-This folder includes the OTAWA framework source of the modules OTAWA, GLISS2, GEL, ELM, oRange, FrontC, ... as well as the MKFFX and OSWA tool.
+This folder includes the OTAWA framework source of the modules ARMv7-Loader, GLISS2, GEL, ELM, oRange, FrontC, lp solve and, finally, OTAWA containing the MKFFX and OSWA tool.
 	
 Required Packages:
 build-essentials
-GNU g++ compiler
+GNU C++ compiler
 GNU make
 flex
 bison
