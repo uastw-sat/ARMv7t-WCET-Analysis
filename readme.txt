@@ -3,6 +3,9 @@ This repository contains tools for the Worst-Case Execution Time (WCET) analysis
 
 Content:
 
+*) examples/
+	Includes example projects for WCET evaulation.
+
 *) source/
 	Includes the OTAWA framework source with all necessary extensions.
 
