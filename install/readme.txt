@@ -9,3 +9,7 @@ Content:
 	RPM package (created 05/2016 with Fedora 22)
 	Install: $ su
 			 $ rpm -i otawa-armv7-0.1fedora-1.x86_64.rpm 
+
+*) otawa-armv7-0.1osx-1_x86_64.pkg
+	OS X install package (created 06/2016 with OS X 10.11.5)
+	Install: run package
