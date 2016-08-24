@@ -13,3 +13,12 @@ Content:
 *) otawa-armv7-0.1osx-1_x86_64.pkg
 	OS X install package (created 06/2016 with OS X 10.11.5)
 	Install: run package
+	
+*) OSWAPlugin_1.0.0.201608.jar
+	WCET Analysis Eclipse Plugin (Interface to OSWA and MKFFX) 
+	Install: 
+	1) install OTAWA (oswa and mkffx tool required!)
+	2) copy OSWAPlugin*.jar to eclipse/dropins folder
+	3) start eclipse
+	4) open menu: "Window" -> "Show View" -> "Other..."; select "WCET Plugin (OSWA)" -> "WCET Analysis" and click OK
+	5) open menu: "Window" -> "Show View" -> "Other..."; select "General" -> "Console" and click OK
